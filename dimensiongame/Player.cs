@@ -13,7 +13,8 @@ namespace dimensiongame
 		//rectangles are (more or less) an (x,y) point, a width and a height.
 		//there are multiple ways to draw something to screen but I find a target rectangle easiest.
 		//see the draw function for how it's called
-		private int tile;
+		private int[] tiles;
+		private bool move;
 		private Vector2 speed;
 		private Texture2D playersprite;
 		private Rectangle playerpos;
@@ -23,8 +24,8 @@ namespace dimensiongame
 		{
 			playerpos.X =100;
 			playerpos.Y = 100;
-			playerpos.Height = 100;
-			playerpos.Width = 100;
+			playerpos.Height = 50;
+			playerpos.Width = 50;
 			speed = Vector2.Zero;
 		}
 		public void LoadContent(ContentManager content)
@@ -34,6 +35,7 @@ namespace dimensiongame
 
 		public void Update(Level level)
 		{
+			move = true;
 			keystate = Keyboard.GetState ();
 
 			if (keystate.IsKeyDown (Keys.Up) == true) 
@@ -57,17 +59,23 @@ namespace dimensiongame
 				speed.Y = 2;
 			}
 
-			tile = level.GetTile (playerpos);
+			tiles = level.GetTile (playerpos);
 
-			if (tile != 1) {
+			foreach (int tile in tiles) {
+				if (tile == 1) {
+					move = false;
+				}
+			}
+
+			if (move==true) {
 				playerpos.X += (int)speed.X;
 				playerpos.Y += (int)speed.Y;
 			}
 			else{
 				speed.X = 0;
 				speed.Y = 0;
-				playerpos.X++;
-				playerpos.Y--;
+				//playerpos.X++;
+				//playerpos.Y--;
 			}
 
 		}

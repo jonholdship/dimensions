@@ -18,6 +18,7 @@ namespace dimensiongame
 		GraphicsDeviceManager graphics;
 		SpriteBatch spritebatch;
 		Player player = new Player();
+		Level level = new Level();
 
 		public Game1 ()
 		{
@@ -36,6 +37,8 @@ namespace dimensiongame
 		{
 			// TODO: Add your initialization logic here
 			base.Initialize ();
+			graphics.PreferredBackBufferHeight = 500;
+			graphics.PreferredBackBufferWidth = 500;
 		}
 
 		/// <summary>
@@ -47,6 +50,7 @@ namespace dimensiongame
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spritebatch = new SpriteBatch (GraphicsDevice);
 			player.LoadContent (Content);
+			level.LoadContent (Content);
 			//TODO: use this.Content to load your game content here 
 		}
 
@@ -66,7 +70,7 @@ namespace dimensiongame
 			}
 			#endif
 			// TODO: Add your update logic here	
-			player.Update();
+			player.Update(level);
 			base.Update (gameTime);
 		}
 
@@ -77,9 +81,11 @@ namespace dimensiongame
 		protected override void Draw (GameTime gameTime)
 		{
 			graphics.GraphicsDevice.Clear (Color.CornflowerBlue);
-		
+			spritebatch.Begin ();
 			//TODO: Add your drawing code here
+			level.Draw (spritebatch);
 			player.Draw(spritebatch);
+			spritebatch.End();
 			base.Draw (gameTime);
 		}
 	}

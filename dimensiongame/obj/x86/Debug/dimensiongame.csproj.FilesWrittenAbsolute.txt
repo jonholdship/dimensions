@@ -1,0 +1,10 @@
+/home/jrh/Documents/codes/dimensions/dimensiongame/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/MonoGame.Framework.dll
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/OpenTK.dll
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/Tao.Sdl.dll
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/OpenTK.dll.config
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/Tao.Sdl.dll.config
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/dimensiongame.exe.mdb
+/home/jrh/Documents/codes/dimensions/dimensiongame/bin/Debug/dimensiongame.exe
+/home/jrh/Documents/codes/dimensions/dimensiongame/obj/x86/Debug/dimensiongame.exe
+/home/jrh/Documents/codes/dimensions/dimensiongame/obj/x86/Debug/dimensiongame.exe.mdb

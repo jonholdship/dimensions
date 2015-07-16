@@ -10,6 +10,10 @@ namespace dimensiongame
 {
 	public class Player
 	{
+		//rectangles are (more or less) an (x,y) point, a width and a height.
+		//there are multiple ways to draw something to screen but I find a target rectangle easiest.
+		//see the draw function for how it's called
+		private Vector2 speed;
 		private Texture2D playersprite;
 		private Rectangle playerpos;
 		KeyboardState keystate;
@@ -20,6 +24,7 @@ namespace dimensiongame
 			playerpos.Y = 100;
 			playerpos.Height = 100;
 			playerpos.Width = 100;
+			speed = Vector2.Zero;
 		}
 		public void LoadContent(ContentManager content)
 		{
@@ -32,21 +37,32 @@ namespace dimensiongame
 
 			if (keystate.IsKeyDown (Keys.Up) == true) 
 			{
-				playerpos.Y--;
+				speed.Y=-1;
 			}
 			if (keystate.IsKeyDown (Keys.Down) == true) 
 			{
-				playerpos.Y++;
+				speed.Y=1;
 			}
 			if (keystate.IsKeyDown (Keys.Left) == true) 
 			{
-				playerpos.X--;
+				speed.X=-1;
 			}
 			if (keystate.IsKeyDown (Keys.Right) == true) 
 			{
-				playerpos.X++;
+				speed.X=1;
 			}
+			if (keystate.IsKeyDown (Keys.Space) == true) 
+			{
+				speed.Y = 2;
+			}
+
+			playerpos.X += (int)speed.X;
+			playerpos.Y+=(int)speed.Y;
+
 		}
+
+
+
 
 		public void Draw(SpriteBatch spritebatch)
 		{	spritebatch.Begin ();

@@ -1,1 +1,30 @@
-﻿<Properties StartupItem="dimensiongame/dimensiongame.csproj" />
+﻿<Properties StartupItem="dimensiongame/dimensiongame.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="dimensiongame/Player.cs">
+    <Files>
+      <File FileName="dimensiongame/Game1.cs" Line="69" Column="20" />
+      <File FileName="dimensiongame/Player.cs" Line="47" Column="18" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="dimensions" expanded="True">
+            <Node name="dimensiongame" expanded="True">
+              <Node name="Packages" expanded="True" />
+              <Node name="Content" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="Player.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

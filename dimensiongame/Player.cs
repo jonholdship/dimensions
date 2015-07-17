@@ -18,6 +18,7 @@ namespace dimensiongame
 		private Vector2 movespeed;
 		private float grav;
 		private bool ground;
+		private float jump, xpace;
 		private Texture2D playersprite;
 		private Rectangle playerpos;
 		KeyboardState keystate;
@@ -25,13 +26,15 @@ namespace dimensiongame
 		//creator obviously
 		public Player()
 		{
+			xpace = 1;
+			jump = 5;
 			playerpos.X =100;
 			playerpos.Y = 100;
-			movespeed.X = 1;
-			movespeed.Y = 100;
+			movespeed.X = xpace;
+			movespeed.Y = 0;
 			movedir.Y = 0;
 			movedir.X = 0;
-			grav = -0.3f;
+			grav = 1f;
 			ground = false;
 			playerpos.Height = 50;
 			playerpos.Width = 50;
@@ -46,8 +49,14 @@ namespace dimensiongame
 		//update works out things like character movement
 		public void Update(Level level)
 		{
-			Getinput();
-			Checkmove (level);
+			//find out what player is pressing
+			keystate = Keyboard.GetState ();
+			//see if we're stood on ground
+			Checkground (level);
+			//simple horizontal movement
+			Movehor(level);
+			//jumping and falling
+			Movever(level);
 
 		}
 
@@ -61,48 +70,33 @@ namespace dimensiongame
 #region internal functions
 //Below are random functions to keep main class logic clear above 
 		//asks for keyboard state and sets movement speed.
-		private void Getinput()
+
+		private void Checkground (Level level)
 		{
-			//reset x and check button presses
-			movedir.X = 0;
-			keystate = Keyboard.GetState ();
-
-			//vertical motion. Allow jumps on ground and remove speed if not (ie gravity).
+			ground = false;
+			playerpos.Y += (int)grav;
+			tiles = level.GetTile (playerpos, 'b');
+			foreach (int tile in tiles) {
+				if (tile == 1) {
+					ground = true;
+					grav = 1f;
+				}
+			}
 			if (ground == true) {
-				grav = -Math.Abs (grav);
-				movedir.Y = 0;
-				movespeed.Y = 3;
-				if (keystate.IsKeyDown (Keys.Up) == true) {
-					movedir.Y = -1;
-				}
-				if (keystate.IsKeyDown (Keys.Space) == true) {
-					movedir.Y = -1;
-				}
-			}
-			else{
-				movespeed.Y += grav;
-				if (movespeed.Y < 0) {
-					movedir.Y = 1;
-					movespeed.Y *= -1;
-					grav *= -1;
-				}
-			}
-
-			//more simple for x motion. just move in direction of button press
-			if (keystate.IsKeyDown (Keys.Left) == true) {
-				movedir.X = -1;
-			}
-			if (keystate.IsKeyDown (Keys.Right) == true) {
-				movedir.X = 1;
+				playerpos.Y -= (int)grav;
 			}
 		}
 
-		private void Checkmove(Level level)
+		private void Movehor(Level level)
 		{
-			playerpos.X += (int)movedir.X;
-			playerpos.Y += (int)movedir.Y;
+			if (keystate.IsKeyDown (Keys.Left) == true) {
+				movedir.X = -1;
+			} else if (keystate.IsKeyDown (Keys.Right) == true) {
+				movedir.X = 1;
+			} else {
+				movedir.X = 0;
+			}
 
-			//this is messy as shit.
 			if (movedir.X > 0) {
 				tiles = level.GetTile (playerpos, 'r');
 			} else {
@@ -114,30 +108,26 @@ namespace dimensiongame
 					movedir.X = 0;
 				}
 			}
+			playerpos.X += (int)(movedir.X * movespeed.X);
+		}
 
-			if (movedir.Y > 0) {
-				tiles = level.GetTile (playerpos, 'b');
-				foreach (int tile in tiles) {
-					if (tile == 1) {
-						playerpos.Y -= (int)movedir.Y;
-						ground = true;
-					}
-				}
-			} else {
-				if (movedir.Y < 0) {
-					ground = false;
-				}
-				tiles = level.GetTile (playerpos, 't');
-				foreach (int tile in tiles) {
-					if (tile == 1) {
-						playerpos.Y -= (int)movedir.Y;
-					}
+		private void Movever(Level level)
+		{
+			if (ground == true) {
+				movedir.Y = 0;
+				movespeed.Y = jump;
+				if (keystate.IsKeyDown (Keys.Up) == true) {
+					movedir.Y = -1;
 				}
 			}
-			playerpos.X += (int)(movedir.X * movespeed.X);
-			playerpos.Y += (int)(movedir.Y * movespeed.X);
+			else{
+				if (movespeed.Y != 0) {
+					movespeed.Y -= grav;
+				}				
+			}
 		}
+			
 	}
 }
-
+			
 #endregion internal functions

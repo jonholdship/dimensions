@@ -13,38 +13,32 @@ namespace dimensiongame
 	public class Level
 	{
 		private Texture2D[] tiles = new Texture2D[2];
-		private int[][] layout = new int[50][];
+		private int[][] layout ;
+		private int levelwidth,levelheight;
 		private Rectangle tile;
 		private string levelfile="level1.csv";
 		private string[] temp,values;
 
-
-		//string strLine = string.Empty;
-		//string[] arrColumns = null;
-		//while ((strLine = tr.ReadLine()) != null)
-		//{
-		//	UserWorkload userWorkload = new UserWorkload();
-
-		//	arrColumns = strLine.Split('\t');
-		//	userWorkload.SSN = arrColumns[0];
-		//	userWorkload.contactHours = Convert.ToInt32(arrColumns[9]);     
-
-		//	userWorkloads.Add(userWorkload);
-		//}
-
 		public Level ()
 		{
 			temp = File.ReadAllLines (levelfile);
+			values=temp[0].Split(',');
+
+			levelwidth = values.GetLength (0);
+			levelheight = temp.GetLength (0);
+
+			layout = new int[levelheight][];
+
+			for (int i = 0; i<50; i++) {
+				layout[i]= new int [levelwidth];
+			}
 
 			for (int i = 0; i<50; i++) {
 				values=temp[i].Split(',');
-				layout [i] = new int [50];
 				for (int j = 0;j< 50; j++) {
-					layout [i] [j] = Convert.ToInt16 (values [j]);
+					layout [j] [i] = Convert.ToInt16 (values [j]);
 				}
 			}
-
-
 			tile.Width = 10;
 			tile.Height = 10;
 		}

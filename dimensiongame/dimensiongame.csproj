@@ -53,6 +53,9 @@
   <ItemGroup>
     <None Include="Icon.png" />
     <None Include="packages.config" />
+    <None Include="level1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenTK.dll.config">

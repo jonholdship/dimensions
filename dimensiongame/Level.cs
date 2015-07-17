@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -14,18 +15,32 @@ namespace dimensiongame
 		private Texture2D[] tiles = new Texture2D[2];
 		private int[][] layout = new int[50][];
 		private Rectangle tile;
+		private string levelfile="level1.csv";
+		private string[] temp,values;
+
+
+		//string strLine = string.Empty;
+		//string[] arrColumns = null;
+		//while ((strLine = tr.ReadLine()) != null)
+		//{
+		//	UserWorkload userWorkload = new UserWorkload();
+
+		//	arrColumns = strLine.Split('\t');
+		//	userWorkload.SSN = arrColumns[0];
+		//	userWorkload.contactHours = Convert.ToInt32(arrColumns[9]);     
+
+		//	userWorkloads.Add(userWorkload);
+		//}
 
 		public Level ()
 		{
+			temp = File.ReadAllLines (levelfile);
+
 			for (int i = 0; i<50; i++) {
+				values=temp[i].Split(',');
 				layout [i] = new int [50];
 				for (int j = 0;j< 50; j++) {
-					if (i > 0 && j>0 && j<49 && i<49) {
-						layout [i][j] = 0;
-					} else {
-						layout [i][j] = 1;
-					}
-
+					layout [i] [j] = Convert.ToInt16 (values [j]);
 				}
 			}
 
@@ -56,50 +71,56 @@ namespace dimensiongame
 		}
 
 		//function that checks along the edges of a recieved rectangle and checks what tile they are touching.
-		public int[] GetTile(Rectangle thing)
+		public int[] GetTile(Rectangle thing, char dir)
 		{
-			int[] intersects=new int[20];
-			int i,x,y,nw,nh;
-			//number of tiles wide and tall rectangle is
-			nw = thing.Width / tile.Width;
-			nh = thing.Height / tile.Height;
-			i = 0;
-			//x and y indices of the element of the level array which corresponds to the position of the rectangle
-			x=thing.X/tile.Width;
-			y=thing.Y/tile.Height;
-			//from the top left of rectangle check every tile along to top right corner
-			for (int w=0; w<nw;w++)
+			int[] intersects=new int[5];
+			int x,y,n;
+			switch (dir)
 			{
-				x = x + 1;
-				intersects[i]=layout[x][y];
-				i++;
+			case 'l':
+				n = thing.Height / tile.Height;
+				x=thing.X/tile.Width;
+				y=thing.Y/tile.Height;
+				for (int ni=0; ni<n;ni++)
+				{
+					intersects[ni]=layout[x][y];
+					y++;
+					ni++;
+				}
+				break;
+			case 'r':
+				n = thing.Height / tile.Height;
+				x=(thing.X+thing.Width)/tile.Width;
+				y=thing.Y/tile.Height;
+				for (int ni=0; ni<n;ni++)
+				{
+					intersects[ni]=layout[x][y];
+					y++;
+					ni++;
+				}		
+				break;
+			case 't':
+				n = thing.Width / tile.Width;
+				x = thing.X / tile.Width;
+				y = thing.Y / tile.Height;
+				for (int ni = 0; ni < n; ni++) {
+					intersects [ni] = layout [x] [y];
+					x++;
+					ni++;
+				}
+				break;
+			case 'b':
+				n = thing.Width / tile.Width;
+				x = thing.X / tile.Width;
+				y = (thing.Y+thing.Height)/tile.Height;
+				for (int ni = 0; ni < n; ni++) {
+					intersects [ni] = layout [x] [y];
+					x++;
+					ni++;
+				}
+				break;	
 			}
-			//same again but from bottom edge
-			x = thing.X /tile.Height;
-			y = (thing.Y + thing.Height) / tile.Height;
-			for (int w=0; w<nw;w++)
-			{
-				x = x + 1;
-				intersects[i]=layout[x][y];
-				i++;
-			//left edge
-			}x=thing.X/tile.Height;
-			y=thing.Y/tile.Height;
-			for (int h=0; h<nh;h++)
-			{
-				y = y + 1;
-				intersects[i]=layout[x][y];
-				i++;
-			}
-			//right edge
-			x = (thing.X+thing.Width) / tile.Height;
-			y = thing.Y/ tile.Height;
-			for (int h=0; h<nh;h++)
-			{
-				y = y + 1;
-				intersects[i]=layout[x][y];
-				i++;
-			}
+	
 			return intersects;
 		}
 	}

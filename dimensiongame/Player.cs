@@ -15,7 +15,6 @@ namespace dimensiongame
 		//see the draw function for how it's called
 		private int[] tiles;
 		private int nfloor;
-		private Vector2 movedir;
 		private Vector2 movespeed;
 		private float grav;
 		private bool ground;
@@ -27,24 +26,23 @@ namespace dimensiongame
 		//creator obviously
 		public Player()
 		{
-			xpace = 10;
-			jump = 20f;
-			playerpos.X =50;
+			//all of the player stats:
+			xpace = 10;				//top move speed horizontally
+			jump = 20f;				//initial jump speed
+			playerpos.X =50;		//intial pos
 			playerpos.Y = 900;
-			movespeed.X = xpace;
-			movespeed.Y = 0;
-			movedir.Y = 0;
-			movedir.X = 0;
-			grav = 1f;
-			termv = 20;
-			ground = false;
-			playerpos.Height = 80;
+
+			grav = 1f;				//gravity strength
+			termv = 20;				//terminal velocty from gravity
+			ground = false;			//intialised to false incase player starts in air
+			playerpos.Height = 80;	//size of player
 			playerpos.Width = 50;
 		}
 
 		//main required functions. LoadConent at start of game. Update and draw each timestep
 		public void LoadContent(ContentManager content)
 		{
+			//player art.
 			playersprite=content.Load<Texture2D>("playsprite");
 		}
 
@@ -65,6 +63,7 @@ namespace dimensiongame
 		//Draw puts out player on the screen. Nothing complicated to so far.
 		public void Draw(SpriteBatch spritebatch)
 		{
+			//draw player in new position
 			spritebatch.Draw (playersprite,playerpos,Color.White);
 		}
 
@@ -72,19 +71,22 @@ namespace dimensiongame
 #region internal functions
 //Below are random functions to keep main class logic clear above 
 
-		//really think this function is redundant due to movever
 		private void Checkground (Level level)
 		{	
-			//assume player is in air, then check to see if it isn't
+			//check to see if player is in air
+			//important because movever doesn't check if player walks off ledge
 			nfloor=0;
 			playerpos.Y++;
+			//find out which tiles are beneath player
 			tiles = level.GetTile (playerpos, 'b');
+			//if any of them are floor, make nfloor!=0
 			foreach (int tile in tiles) {
 				if (tile == 1) {
 					ground = true;
 					nfloor++;
 				}
 			}
+			//if nfloor wasn't changed in above loop, player is in air
 			if (nfloor == 0) {
 				ground = false;
 			} else {

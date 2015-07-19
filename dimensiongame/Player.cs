@@ -14,7 +14,8 @@ namespace dimensiongame
 		//there are multiple ways to draw something to screen but I find a target rectangle easiest.
 		//see the draw function for how it's called
 		private int[] tiles;
-		private int nfloor;
+		private int nfloor,rotcheck,flipcheck;
+		private int windowheight,windowwidth,temp;
 		private Vector2 movespeed;
 		private float grav;
 		private bool ground;
@@ -24,19 +25,23 @@ namespace dimensiongame
 		KeyboardState keystate;
 
 		//creator obviously
-		public Player()
+		public Player(int ww,int wh)
 		{
 			//all of the player stats:
 			xpace = 10;				//top move speed horizontally
 			jump = 20f;				//initial jump speed
 			playerpos.X =50;		//intial pos
 			playerpos.Y = 900;
+			playerpos.Height = 80;	//size of player
+			playerpos.Width = 50;
 
 			grav = 1f;				//gravity strength
 			termv = 20;				//terminal velocty from gravity
 			ground = false;			//intialised to false incase player starts in air
-			playerpos.Height = 80;	//size of player
-			playerpos.Width = 50;
+
+			//stuff about the world
+			windowheight=wh;
+			windowwidth = ww;
 		}
 
 		//main required functions. LoadConent at start of game. Update and draw each timestep
@@ -57,7 +62,8 @@ namespace dimensiongame
 			Movehor(level);
 			//jumping and falling
 			Movever(level);
-
+			//general actions
+			Action(level);
 		}
 
 		//Draw puts out player on the screen. Nothing complicated to so far.
@@ -153,7 +159,31 @@ namespace dimensiongame
 					ground = true;
 				}
 			}
-		}			
+		}
+
+		private void Action(Level level)
+		{
+			//check if r is being pressed.
+			if (keystate.IsKeyDown (Keys.R) == true) {
+				rotcheck = 1;
+			//perform rotate on release of R
+			} else if (rotcheck == 1) {			
+				level.Rotate ();
+				rotcheck = 0;
+				//move player to their new position.
+				temp = playerpos.X;
+				playerpos.X = playerpos.Y;
+				playerpos.Y = windowheight - temp-1;
+			}
+			if (keystate.IsKeyDown (Keys.F) == true) {
+				flipcheck = 1;
+			} else if (flipcheck == 1) {
+
+				level.Flip ();
+				flipcheck = 0;
+				playerpos.Y = windowheight-playerpos.Y;
+			}
+		}
 	}
 }
 			

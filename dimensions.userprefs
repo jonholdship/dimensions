@@ -1,21 +1,25 @@
 ﻿<Properties StartupItem="dimensiongame/dimensiongame.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="dimensiongame/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="dimensiongame/Level.cs">
     <Files>
-      <File FileName="dimensiongame/Game1.cs" Line="1" Column="1" />
-      <File FileName="dimensiongame/Player.cs" Line="37" Column="12" />
-      <File FileName="dimensiongame/Level.cs" Line="80" Column="32" />
-      <File FileName="dimensiongame/level1.csv" Line="42" Column="28" />
+      <File FileName="dimensiongame/Game1.cs" Line="78" Column="25" />
+      <File FileName="dimensiongame/Player.cs" Line="140" Column="26" />
+      <File FileName="dimensiongame/Level.cs" Line="131" Column="24" />
+      <File FileName="dimensiongame/Enemy.cs" Line="152" Column="20" />
+      <File FileName="dimensiongame/level2.csv" Line="36" Column="100" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="dimensions" expanded="True">
             <Node name="dimensiongame" expanded="True">
-              <Node name="Player.cs" selected="True" />
+              <Node name="Level.cs" selected="True" />
             </Node>
           </Node>
         </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

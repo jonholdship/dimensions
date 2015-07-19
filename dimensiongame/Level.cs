@@ -16,7 +16,7 @@ namespace dimensiongame
 		private int[][] layout ;
 		private int levelwidth,levelheight;
 		private Rectangle tile;
-		private string levelfile="level1.csv";
+		private string levelfile="level2.csv";
 
 		public Level (int windowwidth,int windowheight)
 		{
@@ -29,18 +29,20 @@ namespace dimensiongame
 			levelheight = temp.GetLength (0);
 
 			//layout is an array of integer arrays. need levelheight rows.
-			layout = new int[levelheight][];
+			layout = new int[levelwidth][];
 
 			//assign the size of each row to be the number of tiles across the level is
-			for (int i = 0; i<50; i++) {
-				layout[i]= new int [levelwidth];
+			for (int j = 0; j<levelheight; j++) {
+				layout[j]= new int [levelwidth];
 			}
 
 			//loop to assign the  actual tile values to layout
-			for (int i = 0; i<50; i++) {
-				values=temp[i].Split(',');
-				for (int j = 0;j< 50; j++) {
-					layout [j] [i] = Convert.ToInt16 (values [j]);
+			//j on outside because temp is an array of strings, each element being one row of tiles
+			//j is therefore the row number (y co-ord) and i is column number (x co-ord)
+			for (int j = 0; j<levelheight; j++) {
+				values=temp[j].Split(',');
+				for (int i = 0;i< levelwidth; i++) {
+					layout [j] [i] = Convert.ToInt16 (values [i]);
 				}
 			}
 
@@ -68,12 +70,40 @@ namespace dimensiongame
 			//loop over every element in layout. tile is a rectangle that we use to decide where to draw
 			//tile.X=pixels per tile * column of element
 			//by updating like this, one rectangle serves for all the tiles.
-			for (int i = 0; i<50; i++) {
-				for (int j = 0;j< 50; j++) {
+			for (int j = 0; j<levelheight; j++) {
+				for (int i = 0;i< levelwidth; i++) {
 					tile.X = tile.Width * i;
 					tile.Y = tile.Height * j;
-					spritebatch.Draw (tiles[layout[i][j]],tile,Color.White);
+					spritebatch.Draw (tiles[layout[j][i]],tile,Color.White);
 				}
+			}
+		}
+
+		public void Rotate()
+		{
+			//I stole this from online. It works for squares
+			int tmp;
+			int n = levelwidth;
+			for (int i=0; i<n/2; i++){
+				for (int j=i; j<n-i-1; j++){
+					tmp=layout[i][j];
+					layout[i][j]=layout[j][n-i-1];
+					layout[j][n-i-1]=layout[n-i-1][n-j-1];
+					layout[n-i-1][n-j-1]=layout[n-j-1][i];
+					layout[n-j-1][i]=tmp;
+				}
+			}
+
+		}
+
+		public void Flip()
+		{
+			int[] temp=layout[0];
+			int n = levelheight;
+			for (int j = 0; j < n/2; j++) {
+				temp = layout [j];
+				layout[j]=layout[n-j-1];
+				layout [n - j - 1] = temp;
 			}
 		}
 
@@ -101,7 +131,8 @@ namespace dimensiongame
 				for (int ni=0; ni<n;ni++)
 				{
 					y++;
-					intersects[ni]=layout[x][y];
+					intersects[ni]=layout[y][x];
+					layout [y] [x] = 2;
 				}
 				break;
 			//other cases same as above. note below x=thing.x+thing.width.
@@ -116,7 +147,7 @@ namespace dimensiongame
 				for (int ni=0; ni<n;ni++)
 				{	
 					y++;
-					intersects[ni]=layout[x][y];
+					intersects[ni]=layout[y][x];
 				}		
 				break;
 			case 't':
@@ -127,7 +158,7 @@ namespace dimensiongame
 					y = 0;
 				for (int ni = 0; ni < n; ni++) {
 					x++;
-					intersects [ni] = layout [x] [y];
+					intersects [ni] = layout [y] [x];
 				}
 				break;
 			case 'b':
@@ -138,7 +169,7 @@ namespace dimensiongame
 					y = levelheight-1;
 				for (int ni = 0; ni < n; ni++) {
 					x++;
-					intersects [ni] = layout [x] [y];
+					intersects [ni] = layout [y] [x];
 				}
 				break;	
 			}

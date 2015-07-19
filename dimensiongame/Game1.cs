@@ -17,10 +17,12 @@ namespace dimensiongame
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spritebatch;
-		Player player = new Player();
 		const int windowwidth = 1000;
 		const int windowheight = 1000;
 		Level level = new Level(windowwidth,windowheight);
+		Player player = new Player(windowwidth,windowheight);
+		Enemy enemy = new Enemy(windowwidth,windowheight);
+
 
 		public Game1 ()
 		{
@@ -52,6 +54,7 @@ namespace dimensiongame
 			spritebatch = new SpriteBatch (GraphicsDevice);
 			player.LoadContent (Content);
 			level.LoadContent (Content);
+			enemy.LoadContent (Content);
 			//TODO: use this.Content to load your game content here 
 		}
 
@@ -72,6 +75,7 @@ namespace dimensiongame
 			#endif
 			// TODO: Add your update logic here	
 			player.Update(level);
+			enemy.Update (level);
 			base.Update (gameTime);
 		}
 
@@ -86,6 +90,7 @@ namespace dimensiongame
 			//TODO: Add your drawing code here
 			level.Draw (spritebatch);
 			player.Draw(spritebatch);
+			enemy.Draw (spritebatch);
 			spritebatch.End();
 			base.Draw (gameTime);
 		}

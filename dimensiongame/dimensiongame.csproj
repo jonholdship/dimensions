@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Enemy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -56,6 +57,7 @@
     <None Include="level1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="level2.csv" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenTK.dll.config">

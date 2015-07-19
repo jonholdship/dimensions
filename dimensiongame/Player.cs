@@ -14,11 +14,12 @@ namespace dimensiongame
 		//there are multiple ways to draw something to screen but I find a target rectangle easiest.
 		//see the draw function for how it's called
 		private int[] tiles;
+		private int nfloor;
 		private Vector2 movedir;
 		private Vector2 movespeed;
 		private float grav;
 		private bool ground;
-		private float jump, xpace;
+		private float jump, xpace,termv;
 		private Texture2D playersprite;
 		private Rectangle playerpos;
 		KeyboardState keystate;
@@ -26,17 +27,18 @@ namespace dimensiongame
 		//creator obviously
 		public Player()
 		{
-			xpace = 1;
-			jump = 5;
-			playerpos.X =100;
-			playerpos.Y = 100;
+			xpace = 10;
+			jump = 20f;
+			playerpos.X =50;
+			playerpos.Y = 900;
 			movespeed.X = xpace;
 			movespeed.Y = 0;
 			movedir.Y = 0;
 			movedir.X = 0;
 			grav = 1f;
+			termv = 20;
 			ground = false;
-			playerpos.Height = 50;
+			playerpos.Height = 80;
 			playerpos.Width = 50;
 		}
 
@@ -69,64 +71,87 @@ namespace dimensiongame
 
 #region internal functions
 //Below are random functions to keep main class logic clear above 
-		//asks for keyboard state and sets movement speed.
 
+		//really think this function is redundant due to movever
 		private void Checkground (Level level)
-		{
-			ground = false;
-			playerpos.Y += (int)grav;
+		{	
+			//assume player is in air, then check to see if it isn't
+			nfloor=0;
+			playerpos.Y++;
 			tiles = level.GetTile (playerpos, 'b');
 			foreach (int tile in tiles) {
 				if (tile == 1) {
 					ground = true;
-					grav = 1f;
+					nfloor++;
 				}
 			}
-			if (ground == true) {
-				playerpos.Y -= (int)grav;
+			if (nfloor == 0) {
+				ground = false;
+			} else {
+				playerpos.Y--;
 			}
 		}
 
 		private void Movehor(Level level)
 		{
+			//check for L/R keypress and do correct tile check for direction.
 			if (keystate.IsKeyDown (Keys.Left) == true) {
-				movedir.X = -1;
+				tiles = level.GetTile (playerpos, 'l');
+				movespeed.X = -xpace;
 			} else if (keystate.IsKeyDown (Keys.Right) == true) {
-				movedir.X = 1;
+				tiles = level.GetTile (playerpos, 'r');
+				movespeed.X = xpace;
 			} else {
-				movedir.X = 0;
+				movespeed.X = 0;
 			}
 
-			if (movedir.X > 0) {
-				tiles = level.GetTile (playerpos, 'r');
-			} else {
-				tiles = level.GetTile (playerpos, 'l');
-			}
+			//change player position by movespeed
+			playerpos.X += (int)(movespeed.X);
+
+			//check results of GetTile and undo position change if it goes through wall.
 			foreach (int tile in tiles) {
 				if (tile == 1) {
-					playerpos.X -= (int)movedir.X;
-					movedir.X = 0;
+					playerpos.X -= (int)movespeed.X;
+					movespeed.X = 0;
 				}
 			}
-			playerpos.X += (int)(movedir.X * movespeed.X);
 		}
 
 		private void Movever(Level level)
 		{
+			//as a soon as we hit ground, ground becomes true. this allows player to jump
+			//if statement therefore blocks double jumping
 			if (ground == true) {
-				movedir.Y = 0;
-				movespeed.Y = jump;
 				if (keystate.IsKeyDown (Keys.Up) == true) {
-					movedir.Y = -1;
+					movespeed.Y = -jump;
+					ground = false;
 				}
-			}
-			else{
-				if (movespeed.Y != 0) {
-					movespeed.Y -= grav;
+				//if we're not on ground, gravity accelerated down up to terminal velocity
+			} else {
+				if (movespeed.Y < termv) {
+					movespeed.Y += grav;
 				}				
 			}
-		}
-			
+
+			//change player position by move speed
+			playerpos.Y += (int)movespeed.Y;
+		
+			//do the correct tile check depending on move direction
+			if (movespeed.Y < 0) {
+				tiles = level.GetTile (playerpos, 't');
+			} else {
+				tiles = level.GetTile (playerpos, 'b');
+			}
+
+			//check results of GetTile and undo change to position if we hit a wall
+			foreach (int tile in tiles) {
+				if (tile == 1) {
+					playerpos.Y -= (int)movespeed.Y;
+					movespeed.Y = 0;
+					ground = true;
+				}
+			}
+		}			
 	}
 }
 			

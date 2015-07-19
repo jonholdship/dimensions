@@ -18,13 +18,14 @@ namespace dimensiongame
 		GraphicsDeviceManager graphics;
 		SpriteBatch spritebatch;
 		Player player = new Player();
-		Level level = new Level();
+		const int windowwidth = 1000;
+		const int windowheight = 1000;
+		Level level = new Level(windowwidth,windowheight);
 
 		public Game1 ()
 		{
 			graphics = new GraphicsDeviceManager (this);
 			Content.RootDirectory = "Content";	            
-			graphics.IsFullScreen = true;	
 		}
 
 		/// <summary>
@@ -37,8 +38,8 @@ namespace dimensiongame
 		{
 			// TODO: Add your initialization logic here
 			base.Initialize ();
-			graphics.PreferredBackBufferHeight = 500;
-			graphics.PreferredBackBufferWidth = 500;
+			graphics.PreferredBackBufferHeight = windowheight ;
+			graphics.PreferredBackBufferWidth = windowwidth;
 		}
 
 		/// <summary>

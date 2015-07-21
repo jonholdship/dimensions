@@ -75,8 +75,12 @@ namespace dimensiongame
 			#endif
 			// TODO: Add your update logic here	
 			player.Update(level);
-			enemy.Update (level);
+			enemy.Update (level,player);
 			base.Update (gameTime);
+
+			if (player.dead == true) {
+				Exit ();
+			}
 		}
 
 		/// <summary>

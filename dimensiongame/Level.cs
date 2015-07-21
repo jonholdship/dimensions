@@ -12,7 +12,7 @@ namespace dimensiongame
 
 	public class Level
 	{
-		private Texture2D[] tiles = new Texture2D[3];
+		private Texture2D[] tiles = new Texture2D[4];
 		private int[][] layout ;
 		private int levelwidth,levelheight;
 		private Rectangle tile;
@@ -58,6 +58,7 @@ namespace dimensiongame
 			tiles[0]=content.Load<Texture2D>("background");
 			tiles[1]=content.Load<Texture2D>("wall");
 			tiles[2]=content.Load<Texture2D>("lava");
+			tiles [3] = content.Load<Texture2D> ("test");
 		}
 
 		public void Update()
@@ -122,7 +123,9 @@ namespace dimensiongame
 				//number of tiles to check.
 				n = thing.Height / tile.Height;
 				//current tile position of object=pixel position/ pixels per tile
-				x=thing.X/tile.Width;
+				x = thing.X / tile.Width;
+				//reduce x to check tile to left of object rather than first tile inside object
+				x--;
 				y=thing.Y/tile.Height;
 				//don't allow to go off edge of array
 				if (x < 0)
@@ -132,7 +135,6 @@ namespace dimensiongame
 				{
 					y++;
 					intersects[ni]=layout[y][x];
-					layout [y] [x] = 2;
 				}
 				break;
 			//other cases same as above. note below x=thing.x+thing.width.
@@ -154,6 +156,7 @@ namespace dimensiongame
 				n = thing.Width / tile.Width;
 				x = thing.X / tile.Width;
 				y = thing.Y / tile.Height;
+				y--;
 				if (y < 0)
 					y = 0;
 				for (int ni = 0; ni < n; ni++) {

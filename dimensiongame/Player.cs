@@ -24,6 +24,8 @@ namespace dimensiongame
 		private Rectangle playerpos;
 		KeyboardState keystate;
 
+		public bool dead;
+
 		//creator obviously
 		public Player(int ww,int wh)
 		{
@@ -95,8 +97,25 @@ namespace dimensiongame
 			//if nfloor wasn't changed in above loop, player is in air
 			if (nfloor == 0) {
 				ground = false;
-			} else {
+			} else{
 				playerpos.Y--;
+			}
+
+			//check to see if embedded in ground by moving up 1 pixel.
+			nfloor=0;
+			playerpos.Y--;
+			tiles = level.GetTile (playerpos, 'b');
+			//if any of them are floor, make nfloor!=0
+			foreach (int tile in tiles) {
+				if (tile == 1) {
+					nfloor++;
+					ground = true;
+				}
+			}
+
+			//if no longer touching the floor, undo that otherwise stay 1 pixel higher
+			if (nfloor == 0) {
+				playerpos.Y++;
 			}
 		}
 
@@ -184,7 +203,23 @@ namespace dimensiongame
 				playerpos.Y = windowheight-playerpos.Y;
 			}
 		}
+		#endregion internal functions
+
+		public bool collcheck(Rectangle obj)
+		{
+			//coll is true if rectangles overlap
+			bool coll = obj.Intersects (playerpos);
+			bool kill =false;
+			if (coll == true) {
+				//kill is true if bottom of player is no less than 5 pixels below top of enemy 
+				kill = ((playerpos.Y + playerpos.Height) < (obj.Y + 20));
+				if (kill == false) {
+					dead = true;
+				}
+			}
+			//kill remains false if no collision and is false if player dies. Returns true for dead enemy.
+				return kill;
+		}
 	}
 }
 			
-#endregion internal functions

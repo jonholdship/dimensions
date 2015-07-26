@@ -17,11 +17,15 @@ namespace dimensiongame
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spritebatch;
+		//we separately define size of window and size of total world in the level
 		const int windowwidth = 1000;
 		const int windowheight = 1000;
+		int worldwidth,worldheight;
+		//Player and level need to know size of window.
 		Level level = new Level(windowwidth,windowheight);
-		Player player = new Player(windowwidth,windowheight);
-		Enemy enemy = new Enemy(windowwidth,windowheight);
+		Player player = new Player();
+		Enemy enemy = new Enemy();
+		Camera camera;
 
 
 		public Game1 ()
@@ -42,6 +46,15 @@ namespace dimensiongame
 			base.Initialize ();
 			graphics.PreferredBackBufferHeight = windowheight ;
 			graphics.PreferredBackBufferWidth = windowwidth;
+			Viewport viewport = new Viewport ();
+			viewport.Height = windowheight;
+			viewport.Width = windowwidth;
+			viewport.X = 0;
+			viewport.Y = 0;
+
+			worldheight = (int)level.GetLevelSize ().X;
+			worldwidth = (int)level.GetLevelSize ().Y;
+			camera = new Camera (viewport, worldwidth, worldheight);
 		}
 
 		/// <summary>
@@ -74,7 +87,7 @@ namespace dimensiongame
 			}
 			#endif
 			// TODO: Add your update logic here	
-			player.Update(level);
+			player.Update(level,camera);
 			enemy.Update (level,player);
 			base.Update (gameTime);
 
@@ -90,7 +103,8 @@ namespace dimensiongame
 		protected override void Draw (GameTime gameTime)
 		{
 			graphics.GraphicsDevice.Clear (Color.CornflowerBlue);
-			spritebatch.Begin ();
+			spritebatch.Begin(SpriteSortMode.Deferred,null,null,null,null,null,camera.GetTransformation());
+			//spritebatch.Begin();
 			//TODO: Add your drawing code here
 			level.Draw (spritebatch);
 			player.Draw(spritebatch);

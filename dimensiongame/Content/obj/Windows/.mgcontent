@@ -5,5 +5,14 @@
   <Config />
   <SourceFiles>
     <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/playsprite.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/gnu.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/kit.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/kitleft.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/kitright.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/lava.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/tux.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/wall.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/wilber.png</File>
+    <File>/home/jrh/Documents/codes/dimensions/dimensiongame/Content/background.png</File>
   </SourceFiles>
 </SourceFileCollection>

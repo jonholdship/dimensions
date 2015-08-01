@@ -23,6 +23,7 @@ namespace dimensiongame
 		private const float pi = 3.1416f;
 		private char udir,ldir,ddir,rdir,tempdir;
 		private bool wall;
+		private Rectangle target;
 
 		//stuff child classes need to mess with
 		protected Rectangle collbox;
@@ -59,7 +60,6 @@ namespace dimensiongame
 		protected void Checkground (Level level)
 		{	
 			int[] tiles;
-			float movelength;
 			//check to see if player is in air
 			//important because movever doesn't check if player walks off ledge
 			ground=false;
@@ -67,13 +67,12 @@ namespace dimensiongame
 			tiles = level.GetTile (collbox,ddir);
 			//if any of them are floor, make nfloor!=0
 			foreach (int tile in tiles) {
-				if (tile == 1) {
+				if (tile ==1) {
 					ground = true;
 					movey.Y = 0;
 					movey.X = 0;
 				}
 			}
-			movelength = movey.Length();
 			//if nfloor wasn't changed in above loop, player is in air
 			if (ground ==false) {
 				movey += movegrav;
@@ -85,10 +84,11 @@ namespace dimensiongame
 
 			pos = pos + movey;
 
-			//check to see if embedded in ground by moving up 1 pixel.
+			//check to see if embedded in ground by moving up 1 tile.
+			//up is relative to rotation.
 			nfloor=0;
-			pos.X+=20f*(float)(Math.Sin(rot));
-			pos.Y-=20f*(float)(Math.Cos(rot));
+			pos.X+=(float)(Math.Sin(rot));
+			pos.Y-=(float)(Math.Cos(rot));
 			tiles = level.GetTile (collbox, ddir);
 			//if any of them are floor, make nfloor!=0
 			foreach (int tile in tiles) {
@@ -100,8 +100,8 @@ namespace dimensiongame
 
 			//if no longer touching the floor, undo that otherwise stay 1 pixel higher
 			if (nfloor == 0) {
-				pos.X-=20f*(float)(Math.Sin(rot));
-				pos.Y+=20f*(float)(Math.Cos(rot));
+				//pos.X-=20f*(float)(Math.Sin(rot));
+				pos.Y+=(float)(Math.Cos(rot));
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace dimensiongame
 			tiles = level.GetTile (collbox, ldir);
 			wall = false;
 			foreach (int tile in tiles) {
-				if (tile == 1) {
+				if (tile !=0) {
 					wall = true;
 				}
 			}
@@ -132,7 +132,7 @@ namespace dimensiongame
 			tiles = level.GetTile (collbox, rdir);
 			wall = false;
 			foreach (int tile in tiles) {
-				if (tile == 1) {
+				if (tile !=0) {
 					check = 1;
 				}
 			}
@@ -145,11 +145,13 @@ namespace dimensiongame
 		protected void Moveup(Level level)
 		{	
 			int[] tiles;
-			
-			tiles = level.GetTile (collbox, udir);
+			target = collbox;
+			target.X+=(int)(jump * (float)Math.Sin (rot));
+			target.Y-=(int)(jump * (float)Math.Cos (rot));
+			tiles = level.GetTile (target, udir);
 			wall = false;
 			foreach (int tile in tiles) {
-				if (tile == 1) {
+				if (tile !=0) {
 					wall = true;
 				}
 			}
@@ -161,10 +163,28 @@ namespace dimensiongame
 			pos = pos + movey;
 		}
 
-		protected void Moveupdate()
+		protected void Moveupdate(Level level)
 		{
-			collbox.X = (int)pos.X;
-			collbox.Y = (int)pos.Y;
+			int xchecks = (int)(pos.X - collbox.X) / 5;
+			int ychecks = (int)(pos.Y - collbox.Y) / 5;
+			int n=0;
+			int[] tiles;
+			bool stop = false;
+
+			while (n < 5 && stop==false) {
+				collbox.X += xchecks;
+				collbox.Y += ychecks;
+				/*tiles=level.wallcheck (collbox);
+				//foreach (int tile in tiles) {
+				//	if (tile ==1) {
+						stop = true;
+					}
+					if (tile ==1) {
+						stop = true;
+						dead = true;
+					}
+				}*/
+			}
 		}
 
 		protected void Rotate()
@@ -185,8 +205,7 @@ namespace dimensiongame
 			ldir = ddir;
 			ddir = rdir;
 			rdir = tempdir;
-
-			temp=collbox.Width;
+			temp=collbox.Height;
 			collbox.Height = collbox.Width;
 			collbox.Width = temp;
 			

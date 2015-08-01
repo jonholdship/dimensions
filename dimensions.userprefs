@@ -1,26 +1,15 @@
 ﻿<Properties StartupItem="dimensiongame/dimensiongame.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="dimensiongame/Level.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="dimensiongame/Game1.cs">
     <Files>
-      <File FileName="dimensiongame/Game1.cs" Line="27" Column="27" />
-      <File FileName="dimensiongame/Player.cs" Line="27" Column="17" />
-      <File FileName="dimensiongame/Enemy.cs" Line="64" Column="5" />
-      <File FileName="dimensiongame/Character.cs" Line="103" Column="1" />
-      <File FileName="dimensiongame/Level.cs" Line="184" Column="1" />
-      <File FileName="dimensiongame/level2.csv" Line="1" Column="78" />
-      <File FileName="dimensiongame/Camera.cs" Line="36" Column="16" />
+      <File FileName="dimensiongame/Game1.cs" Line="31" Column="1" />
+      <File FileName="dimensiongame/Player.cs" Line="1" Column="1" />
+      <File FileName="dimensiongame/Enemy.cs" Line="1" Column="1" />
+      <File FileName="dimensiongame/Character.cs" Line="1" Column="1" />
+      <File FileName="dimensiongame/Level.cs" Line="1" Column="1" />
+      <File FileName="dimensiongame/level2.csv" Line="1" Column="1" />
+      <File FileName="dimensiongame/Camera.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="dimensions" expanded="True">
-            <Node name="dimensiongame" expanded="True">
-              <Node name="Level.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

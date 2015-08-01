@@ -60,7 +60,7 @@ namespace dimensiongame
 					dead = player.collcheck (collbox);
 				}
 
-				Moveupdate ();
+				Moveupdate (level);
 			}
 		}
 

@@ -55,7 +55,7 @@ namespace dimensiongame
 			// movement
 			Move(level);
 			//general actions
-			Moveupdate();
+			Moveupdate(level);
 			Action(camera, level);
 			//tell camera where we are
 			camera.poscheck(pos);

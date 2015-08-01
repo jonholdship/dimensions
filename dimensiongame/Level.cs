@@ -116,6 +116,39 @@ namespace dimensiongame
 			return size;
 		}
 
+		public int[] wallcheck (Rectangle thing)
+		{
+			//x and y co-ord in tile units
+			int[] intersects=new int[9];
+			int n = 0;
+			int tilex = thing.X / tile.Width;
+			int tiley = thing.Y / tile.Height;
+			Rectangle checktile;
+			checktile = tile;
+			//loop over 9 tiles, the tile the object is in and the 8 around it.
+			for (int x=-1;x<=1;x++){
+				for (int y=-1;y<=1;y++){
+					//check tile is a rectangle containing the current tile
+					checktile.X=tile.Width*x;
+					checktile.Y=tile.Height*y;
+					if (checktile.Intersects (thing)) {
+						if (layout [y] [x] == 1) {
+							//if inside a wall, move thing away from wall tile
+							thing.Y += (y - tiley);
+							thing.X -= (tilex - x);
+						}
+						//always best let thing decide consequences so just send back tile.
+						intersects [n] = layout [y] [x];
+					} else {
+						intersects [n] = 0;
+					}
+					n++;
+				}
+			}
+			return intersects;
+		}
+
+
 		//function that checks along the edges of a recieved rectangle and checks what tile they are touching.
 		public int[] GetTile(Rectangle thing, char dir)
 		{
@@ -159,7 +192,6 @@ namespace dimensiongame
 				{	
 					intersects[ni]=layout[y][x];
 					y++;
-
 				}		
 				break;
 			case 'u':
@@ -171,6 +203,7 @@ namespace dimensiongame
 					y = 0;
 				for (int ni = 0; ni < n; ni++) {
 					intersects [ni] = layout [y] [x];
+					layout [y] [x] = 2;
 					x++;
 				}
 				break;

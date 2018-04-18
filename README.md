@@ -1,5 +1,7 @@
-# dimensions
-Dimensions game in progress
+# Dimensions
+Puzzle Platformer in which the player can rotate the 2D world to open new paths.
+
+# Dimensions game in progress
 
 There's now a Character class with basic movement controls for enemies and player.
 

@@ -1,9 +1,6 @@
 # dimensions
 Dimensions game in progress
 
-I'm thinking we name all functions and classes with captial letters and all variables internal to a class in all lowercase.
-That will help with things like where we have an instance of the Player class called player.
-
 There's now a Character class with basic movement controls for enemies and player.
 
 It would be useful to do the tile check with a target position rather than just a little ahead as the player can jump through floors at the moment.
